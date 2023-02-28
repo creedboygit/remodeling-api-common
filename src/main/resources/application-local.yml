@@ -1,0 +1,100 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/REMODELING_COMMON?useUnicode=true&characterEncoding=utf8&autoReconnect=true
+    username: remodeling
+    password: remodeling!@#
+    hikari:
+      maximum-pool-size: 2
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    open-in-view: false
+    show-sql: false
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+    properties:
+      hibernate:
+        format_sql: true
+        enable_lazy_load_no_trans: false
+        use_sql_comments: false
+        default_batch_fetch_size: 500
+  redis:
+    host: 127.0.0.1
+    #    host: dev-remodeling-cache.y9b7eg.ng.0001.apn2.cache.amazonaws.com
+    port: 6379
+  zipkin:
+    enabled: false
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9092
+      group-id: template
+      auto-offset-reset: earliest
+  data:
+    redis:
+      repositories:
+        enabled: true
+#  autoconfigure:
+#    exclude: org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
+  servlet:
+    multipart:
+      max-file-size: 30MB
+      max-request-size: 35MB
+  gateway-url: http://localhost:8090/
+
+logging:
+  level:
+    root: DEBUG
+    p6spy: OFF
+amazon :
+  bucket: dev-remodeling
+  bucket-domain: https://dev-remodeling.s3.ap-northeast-2.amazonaws.com
+  cdn-url: https://dev-static.remodeling.hanssem.com
+springdoc:
+  version: '1.6.13'
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+    groups:
+      enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
+    tagsSorter: alpha
+    use-root-path: true
+    groups-order: desc
+  cache:
+    disabled: true
+konan:
+  ksf:
+    host: 192.168.40.116
+    port: 7577
+    charset: utf-8
+  crz:
+    host: 192.168.40.116
+    port: 7577
+    charset: utf-8
+feign:
+  baseUrl:
+    mall-api: https://pjmall.hanssem.com
+  client:
+    config:
+      default:
+        connect-timeout: 5000
+        read-timeout: 5000
+        logger-level: FULL
+        default-request-headers:
+          Accept: application/json
+          Content-Type: application/json
+      mall-api:
+        end-points:
+          get-scraps: /API/v5/wish/getlist
+          add-scraps: /API/v5/wish/insert
+          delete-scraps: /API/v5/wish/delete
+          exist-scraps: /API/v5/wish/getyn
+          get-address: /API/v5/homeidea/houseSearch
+          get-blueprints: /API/v5/homeidea/apartmentFloorPlanSearch
+        default-request-headers:
+          SiteKey: c7a4c96286e7f65209e49bdb6e0c4281916b4301f355be4c494b769b6c08c3fc

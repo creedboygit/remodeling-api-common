@@ -1,0 +1,52 @@
+server:
+  port: 80
+  shutdown: graceful
+spring:
+  application:
+    name: common-service
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: false
+  redis:
+    client-type: lettuce
+    connect-timeout: 3S
+    timeout: 1S # readTimeout
+
+logging:
+  service: api-common
+  config: classpath:logback-spring.xml
+  level:
+    root: debug
+management:
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+          - liveness
+          - readiness
+      base-path: /monitor
+cloud:
+  aws:
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+    credentials:
+      access-key: ${AWS_ACCESS_KEY}
+      secret-key: ${AWS_SECRET_KEY}
+
+cdn:
+  image: https://image.localhost
+  file: https://file.localhost
